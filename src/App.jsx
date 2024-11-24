@@ -1,17 +1,11 @@
 import { useState, useEffect, useContext } from 'react'
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid2'
-import Badge from '@mui/material/Badge';
-import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid2';
+import { Card, CardContent, CardMedia, Typography, Badge, TextField } from '@mui/material';
 import { ApiContext } from './context/ApiContext'
 
 
 function App() {
   const { results, getResults, filteredResults, searchCharacters } = useContext(ApiContext)
-  const [query, setQuery] = useState("");
   const [validation, setValidation] = useState(false)
 
   useEffect(() => {
@@ -19,7 +13,6 @@ function App() {
   }, [])
 
   const handleSearch = (e) => {
-    setQuery(e.target.value);
     searchCharacters(e.target.value);
     if (e.target.value !== "") {
       setValidation(false)
@@ -35,13 +28,10 @@ function App() {
         error={validation}
         type="text"
         placeholder="Search characters..."
-        value={query}
         onChange={handleSearch}
+        fullWidth
         style={{
-          padding: '10px',
           margin: '20px 0',
-          width: '100%',
-          maxWidth: '400px',
           fontSize: '16px',
         }}
         helperText={validation == false ? "" : "Insert a character name."}
@@ -74,6 +64,10 @@ function App() {
           </Grid>
         ))}
       </Grid>
+      <div>
+        <button>Anterior</button>
+        <button>Próximo</button>
+      </div>
     </>
   )
 }

@@ -1,34 +1,33 @@
-import { createContext, useState } from 'react'
+import { createContext, useState, useMemo } from 'react'
 import axios from 'axios'
 
 const ApiContext = createContext()
 
 function ApiContextProvider({ children }) {
   const [results, setResults] = useState([])
-  const [filteredResults, setFilteredResults] = useState([]);
+  const [query, setQuery] = useState("")
 
   async function getResults() {
     try {
       const response = await axios.get("https://rickandmortyapi.com/api/character");
       setResults(response.data.results);
-      setFilteredResults(response.data.results);
+      console.log(response)
     } catch (error) {
       console.log(error);
     }
   }
 
-  function searchCharacters(query) {
-    if (!query) {
-      setFilteredResults(results); // Mostra todos os personagens se a busca estiver vazia
-    } else {
-      const lowerQuery = query.toLowerCase();
-      const filtered = results.filter((character) =>
-        character.name.toLowerCase().includes(lowerQuery)
-      );
-      setFilteredResults(filtered);
-    }
-  }
+  const filteredResults = useMemo(() => {
+    if (!query) return results;
+    const lowerQuery = query.toLowerCase();
+    return results.filter((character) =>
+      character.name.toLowerCase().includes(lowerQuery)
+    );
+  }, [query, results]);
 
+  function searchCharacters(newQuery) {
+    setQuery(newQuery);
+  }
 
   const data = {
     results,
