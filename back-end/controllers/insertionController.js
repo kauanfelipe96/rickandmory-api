@@ -13,7 +13,7 @@ export const insertItem = async (req, res) => {
 
     res.status(201).json({
       message: 'Item inserido com sucesso',
-      itemId: resut.insertId
+      itemId: result.insertId
     })
   } catch (error) {
     console.error('Error na inserção:', error);

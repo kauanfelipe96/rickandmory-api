@@ -1,6 +1,6 @@
 export const authenticate = (req, res, next) => {
-  const token = req.headers.authorization?.split('')[1];
   const authHeader = req.headers.authorization;
+  const token = authHeader.split(' ')[1];
 
   if (!authHeader) {
     return res.status(401).json({ message: 'Acesso negado.' })

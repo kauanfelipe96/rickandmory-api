@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Alert from "@mui/material/Alert";
+import axios from "axios";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function Login() {
         return emailRegex.test(email);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const email = data.get("email");
@@ -35,9 +36,22 @@ export default function Login() {
 
         setError("");
 
-        console.log({ email, senha });
-        navigate("/home");
-    };
+        try {
+            const backendUrl = import.meta.env.VITE_BACKEND_URL;
+            const response = await axios.post(`${backendUrl}/auth/login`, { 
+              email, 
+              password: senha 
+            });
+            localStorage.setItem("token", response.data.token);
+            navigate("/home");
+          } catch (err) {
+            console.error(err);
+            setError(
+              err.response?.data?.message || "Erro ao efetuar login. Tente novamente."
+            );
+          }
+        };
+    
 
     return (
         <Container component="main" maxWidth="xs">
