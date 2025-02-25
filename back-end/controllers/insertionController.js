@@ -1,4 +1,4 @@
-import pool from '../config/db';
+import pool from '../config/db.js';
 
 export const insertItem = async (req, res) => {
   try {

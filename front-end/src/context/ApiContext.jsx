@@ -6,14 +6,23 @@ const ApiContext = createContext()
 function ApiContextProvider({ children }) {
   const [results, setResults] = useState([])
   const [query, setQuery] = useState("")
+  const backendUrl = import.meta.env.BACKEND_URL;
 
   async function getResults() {
     try {
-      const response = await axios.get("https://rickandmortyapi.com/api/character");
+      let response;
+      if (query) {
+        response = await axios.get(`${backendUrl}/search`, {
+          params: { query }
+        });
+      } else {
+        response = await axios.get("https://rickandmortyapi.com/api/character");
+      }
+
       setResults(response.data.results);
-      console.log(response)
+      console.log(response);
     } catch (error) {
-      console.log(error);
+      console.log("Erro ao buscar personagens", error);
     }
   }
 

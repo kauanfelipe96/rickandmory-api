@@ -5,11 +5,8 @@ export const login = (req, res) => {
     return res.status(400).json({ message: 'Usuario e senha são obrigatórios' });
   }
 
-  if (username === 'usuario' && password === 'senha123') {
-    return res.json({
-      message: 'Login realizado com sucesso',
-      token: 'token'
-    });
+  if (username === 'usuario' && password === 'senha') {
+    res.status(200).json({ message: 'Login bem-sucedido', token: 'A1B2C3' });
   } else {
     return res.status(401).json({ message: 'Credenciais inválidas' });
   }
